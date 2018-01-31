@@ -1,23 +1,19 @@
-#ny-simple.py
+#nyt cache
 from secrets import *
 import requests
 import json
 
-# on startup, try to load the cache from file
+
 CACHE_FNAME = 'cache_file_name.json'
 try:
     cache_file = open(CACHE_FNAME, 'r')
     cache_contents = cache_file.read()
     CACHE_DICTION = json.loads(cache_contents)
     cache_file.close()
-
-# if there was no file, no worries. There will be soon!
 except:
     CACHE_DICTION = {}
 
-# A helper function that accepts 2 parameters
-# and returns a string that uniquely represents the request
-# that could be made with this info (url + params)
+
 def params_unique_combination(baseurl, params):
     alphabetized_keys = sorted(params.keys())
     res = []
@@ -25,10 +21,7 @@ def params_unique_combination(baseurl, params):
         res.append("{}-{}".format(k, params[k]))
     return baseurl + "_".join(res)
 
-# The main cache function: it will always return the result for this
-# url+params combo. However, it will first look to see if we have already
-# cached the result and, if so, return the result from cache.
-# If we haven't cached the result, it will get a new one (and cache it)
+
 def make_request_using_cache(baseurl, params):
     unique_ident = params_unique_combination(baseurl,params)
 
